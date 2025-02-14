@@ -1,0 +1,28 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+  address: String!
+}
+
+type BaseResponse {
+  success: Boolean!
+  message: String!
+  data: User
+}
+
+type Query {
+  _: Boolean
+}
+
+type Mutation {
+  signUp(
+    name: String!
+    address: String!
+    email: String!
+    phone: String!
+    password: String!
+    confirmPassword: String!
+  ): BaseResponse!
+}
