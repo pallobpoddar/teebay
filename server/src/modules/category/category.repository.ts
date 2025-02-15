@@ -2,6 +2,12 @@ import prisma from "../../config/prismaClient";
 import { Category } from "@prisma/client";
 
 class CategoryRepository {
+  async getAllCategories(): Promise<Category[]> {
+    const categories = await prisma.category.findMany();
+
+    return categories;
+  }
+
   async createCategories(names: string[]): Promise<Category[]> {
     await prisma.category.createMany({
       data: names.map((name) => ({ name })),

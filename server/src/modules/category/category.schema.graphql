@@ -9,6 +9,10 @@ type CategoryResponse {
   data: [Category!]
 }
 
+type Query {
+  getAllCategories: CategoryResponse!
+}
+
 type Mutation {
   createCategories(names: [String!]!): CategoryResponse!
 }
