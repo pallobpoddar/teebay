@@ -93,6 +93,18 @@ class ProductRepository {
 
     return product;
   }
+
+  async deleteProduct(id: UUID): Promise<Product> {
+    const product = await prisma.product.delete({
+      where: { id },
+      include: {
+        seller: true,
+        categories: true,
+      },
+    });
+
+    return product;
+  }
 }
 
 export default new ProductRepository();

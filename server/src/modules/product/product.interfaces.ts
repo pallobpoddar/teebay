@@ -11,7 +11,7 @@ interface ProductCreationArgs {
 }
 
 interface ProductUpdateArgs {
-  productId: UUID,
+  id: UUID,
   title?: string;
   categoryIds?: UUID[];
   description?: string;

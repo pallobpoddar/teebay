@@ -62,23 +62,23 @@ class ProductService {
   }
 
   async updateProduct(
-    productId: UUID,
+    id: UUID,
     title?: string,
     categoryIds?: UUID[],
     description?: string,
     price?: number,
     rent?: number,
-    rentOption?: "hr" | "day",
+    rentOption?: "hr" | "day"
   ): Promise<Product> {
-    const existingProduct = await productRepository.getProductById(productId);
+    const existingProduct = await productRepository.getProductById(id);
     if (!existingProduct) {
       throw new GraphQLError("Product not found", {
         extensions: { code: "NOT_FOUND" },
       });
     }
-    
+
     const product = await productRepository.updateProduct(
-      productId,
+      id,
       title,
       categoryIds,
       description,
@@ -86,6 +86,19 @@ class ProductService {
       rent,
       rentOption
     );
+
+    return product;
+  }
+
+  async deleteProduct(id: UUID): Promise<Product> {
+    const existingProduct = await productRepository.getProductById(id);
+    if (!existingProduct) {
+      throw new GraphQLError("Product not found", {
+        extensions: { code: "NOT_FOUND" },
+      });
+    }
+
+    const product = await productRepository.deleteProduct(id);
 
     return product;
   }

@@ -43,7 +43,7 @@ type Mutation {
   ): ProductMutationResponse!
 
   updateProduct(
-    productId: ID!
+    id: ID!
     title: String
     categoryIds: [ID!]
     description: String
@@ -51,4 +51,6 @@ type Mutation {
     rent: Float
     rentOption: RentOption
   ): ProductMutationResponse!
+
+  deleteProduct(id: ID!): ProductMutationResponse!
 }

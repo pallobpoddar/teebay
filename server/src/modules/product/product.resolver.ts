@@ -62,11 +62,11 @@ const productResolvers = {
 
     updateProduct: async (_: any, args: ProductUpdateArgs) => {
       try {
-        const { productId, title, categoryIds, description, price, rent, rentOption } =
+        const { id, title, categoryIds, description, price, rent, rentOption } =
           args;
 
         const product = await productService.updateProduct(
-          productId,
+          id,
           title,
           categoryIds,
           description,
@@ -76,6 +76,19 @@ const productResolvers = {
         );
 
         return handleSuccess("Successfully updated product", product);
+      } catch (error) {
+        console.error(error);
+        return handleError(error);
+      }
+    },
+
+    deleteProduct: async (_: any, args: { id: UUID }) => {
+      try {
+        const { id } = args;
+
+        const product = await productService.deleteProduct(id);
+
+        return handleSuccess("Successfully deleted product", product);
       } catch (error) {
         console.error(error);
         return handleError(error);
