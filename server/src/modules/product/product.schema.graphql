@@ -1,0 +1,33 @@
+enum RentOption {
+  hr
+  day
+}
+
+type Product {
+  id: ID!
+  title: String!
+  categories: [Category!]!
+  description: String!
+  price: Float!
+  rent: Float!
+  rentOption: RentOption!
+  seller: User!
+}
+
+type ProductResponse {
+  success: Boolean!
+  message: String!
+  data: Product
+}
+
+type Mutation {
+  createProduct(
+    title: String!
+    categoryIds: [ID!]!
+    description: String!
+    price: Float!
+    rent: Float!
+    rentOption: RentOption!
+    sellerId: ID!
+  ): ProductResponse!
+}

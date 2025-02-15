@@ -8,17 +8,40 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  email     String   @unique
+  email     String    @unique
   phone     String
   address   String
   password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  products  Product[] @relation("SellerProducts")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Category {
-  id   String @id @default(uuid())
-  name String @unique
+  id        String    @id @default(uuid())
+  name      String    @unique
+  products  Product[] @relation("ProductCategories")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum RentOption {
+  hr
+  day
+}
+
+model Product {
+  id          String     @id @default(uuid())
+  title       String
+  categories  Category[] @relation("ProductCategories")
+  description String
+  price       Decimal
+  rent        Decimal
+  rentOption  RentOption
+  sellerId    String
+  seller      User       @relation("SellerProducts", fields: [sellerId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

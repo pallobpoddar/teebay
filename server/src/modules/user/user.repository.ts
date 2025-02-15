@@ -1,7 +1,16 @@
+import { UUID } from "crypto";
 import prisma from "../../config/prismaClient";
 import { User } from "@prisma/client";
 
 class UserRepository {
+  async findById(id: UUID): Promise<User | null> {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    return user;
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await prisma.user.findUnique({
       where: { email },
