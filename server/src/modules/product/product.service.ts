@@ -11,7 +11,20 @@ class ProductService {
 
     return products;
   }
-  
+
+  async getProductsBySellerId(sellerId: UUID): Promise<Product[]> {
+    const user = await userRepository.findById(sellerId);
+    if (!user) {
+      throw new GraphQLError("User not found", {
+        extensions: { code: "NOT_FOUND" },
+      });
+    }
+
+    const products = await productRepository.getProductsBySellerId(sellerId);
+
+    return products;
+  }
+
   async createProduct(
     title: string,
     categoryIds: UUID[],

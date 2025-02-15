@@ -28,6 +28,7 @@ type ProductRetrieveResponse {
 
 type Query {
   getAllProducts: ProductRetrieveResponse!
+  getProductsBySellerId(sellerId: ID!): ProductRetrieveResponse!
 }
 
 type Mutation {
