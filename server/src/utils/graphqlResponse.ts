@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 
-const sendSuccessResponse = (message: string, data?: Object) => {
+const handleSuccess = (message: string, data?: Object) => {
   return {
     success: true,
     message,
@@ -8,11 +8,11 @@ const sendSuccessResponse = (message: string, data?: Object) => {
   };
 };
 
-const sendErrorResponse = (error?: unknown) => {
+const handleError = (error?: unknown) => {
   if (error instanceof GraphQLError) {
     return {
       success: false,
-      message:error.message,
+      message: error.message,
       error,
     };
   }
@@ -24,4 +24,4 @@ const sendErrorResponse = (error?: unknown) => {
   };
 };
 
-export { sendSuccessResponse, sendErrorResponse };
+export { handleSuccess, handleError };

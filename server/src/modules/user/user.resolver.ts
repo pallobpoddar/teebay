@@ -1,10 +1,6 @@
 import userService from "./user.service";
 import { SignUpArgs } from "./user.interfaces";
-import {
-  sendSuccessResponse,
-  sendErrorResponse,
-} from "../../utils/responseSender";
-import { GraphQLError } from "graphql";
+import { handleSuccess, handleError } from "../../utils/graphqlResponse";
 
 const userResolvers = {
   Mutation: {
@@ -13,15 +9,28 @@ const userResolvers = {
         const { name, address, email, phone, password, confirmPassword } = args;
 
         if (password !== confirmPassword) {
-          return sendErrorResponse("Passwords do not match");
+          return handleError("Passwords do not match");
         }
 
-        await userService.signUp(name, address, email, phone, password);
+        const user = await userService.signUp(name, address, email, phone, password);
 
-        return sendSuccessResponse("Signup successful. Please sign in");
+        return handleSuccess("Successfully signed up. Please sign in", user);
       } catch (error) {
         console.error(error);
-        return sendErrorResponse(error);
+        return handleError(error);
+      }
+    },
+
+    signIn: async (_: any, args: { email: string; password: string }) => {
+      try {
+        const { email, password } = args;
+
+        const user = await userService.signIn(email, password);
+
+        return handleSuccess("Successfully signed in", user);
+      } catch (error) {
+        console.error(error);
+        return handleError(error);
       }
     },
   },

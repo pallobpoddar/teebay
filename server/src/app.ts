@@ -39,12 +39,7 @@ class App {
     this.app.use(helmet());
     this.app.use(express.json());
     await this.apolloServer.start();
-    this.app.use(
-      "/graphql",
-      expressMiddleware(this.apolloServer, {
-        context: async ({ req }) => ({ token: req.headers.token }),
-      })
-    );
+    this.app.use(expressMiddleware(this.apolloServer));
   }
 
   public async start(): Promise<void> {

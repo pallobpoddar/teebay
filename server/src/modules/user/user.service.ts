@@ -1,6 +1,9 @@
 import { GraphQLError } from "graphql";
 import userRepository from "./user.repository";
-import { hashPassword } from "../../utils/passwordSecurityHandler";
+import {
+  hashPassword,
+  comparePasswords,
+} from "../../utils/passwordSecurityHandler";
 import { User } from "@prisma/client";
 
 class UserService {
@@ -25,6 +28,20 @@ class UserService {
       phone,
       password: hashedPassword,
     });
+
+    return user;
+  }
+
+  async signIn(email: string, password: string): Promise<User> {
+    const user = await userRepository.findByEmail(email);
+    if (!user) {
+      throw new GraphQLError("Incorrect email or password");
+    }
+
+    const checkPassword = await comparePasswords(password, user.password);
+    if (!checkPassword) {
+      throw new GraphQLError("Incorrect email or password");
+    }
 
     return user;
   }

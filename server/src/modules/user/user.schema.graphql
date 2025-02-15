@@ -25,4 +25,6 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): BaseResponse!
+
+  signIn(email: String!, password: String!): BaseResponse!
 }
