@@ -1,0 +1,18 @@
+scalar Date
+
+type Purchase {
+  id: ID!
+  product: Product!
+  buyer: User!
+  createdAt: Date!
+}
+
+type PurchaseMutationResponse {
+  success: Boolean!
+  message: String!
+  data: Purchase
+}
+
+type Mutation {
+  createPurchase(productId: ID!, buyerId: ID!): PurchaseMutationResponse!
+}

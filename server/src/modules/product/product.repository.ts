@@ -26,7 +26,7 @@ class ProductRepository {
     return products;
   }
 
-  async getProductById(id: UUID): Promise<Product | null> {
+  async findById(id: UUID): Promise<Product | null> {
     const product = await prisma.product.findUnique({
       where: { id },
       include: {

@@ -9,7 +9,7 @@ class CategoryRepository {
     return categories;
   }
 
-  async getCategoriesByIds(ids: UUID[]): Promise<Category[]> {
+  async findByIds(ids: UUID[]): Promise<Category[]> {
     const categories = await prisma.category.findMany({
       where: { id: { in: ids } },
     });

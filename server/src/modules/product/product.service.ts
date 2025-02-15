@@ -41,7 +41,7 @@ class ProductService {
       });
     }
 
-    const categories = await categoryRepository.getCategoriesByIds(categoryIds);
+    const categories = await categoryRepository.findByIds(categoryIds);
     if (categories.length !== categoryIds.length) {
       throw new GraphQLError("One or more categories not found", {
         extensions: { code: "NOT_FOUND" },
@@ -70,7 +70,7 @@ class ProductService {
     rent?: number,
     rentOption?: "hr" | "day"
   ): Promise<Product> {
-    const existingProduct = await productRepository.getProductById(id);
+    const existingProduct = await productRepository.findById(id);
     if (!existingProduct) {
       throw new GraphQLError("Product not found", {
         extensions: { code: "NOT_FOUND" },
@@ -91,7 +91,7 @@ class ProductService {
   }
 
   async deleteProduct(id: UUID): Promise<Product> {
-    const existingProduct = await productRepository.getProductById(id);
+    const existingProduct = await productRepository.findById(id);
     if (!existingProduct) {
       throw new GraphQLError("Product not found", {
         extensions: { code: "NOT_FOUND" },

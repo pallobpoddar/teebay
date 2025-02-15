@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
-  email     String    @unique
+  email     String     @unique
   phone     String
   address   String
   password  String
-  products  Product[] @relation("SellerProducts")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  products  Product[]  @relation("SellerProducts")
+  purchases Purchase[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Category {
@@ -42,6 +43,17 @@ model Product {
   rentOption  RentOption
   sellerId    String
   seller      User       @relation("SellerProducts", fields: [sellerId], references: [id])
+  purchase    Purchase?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+
+model Purchase {
+  id        String   @id @default(uuid())
+  productId String   @unique
+  buyerId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  buyer     User     @relation(fields: [buyerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
