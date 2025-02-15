@@ -3,6 +3,17 @@ import prisma from "../../config/prismaClient";
 import { Product } from "@prisma/client";
 
 class ProductRepository {
+  async getAllProducts(): Promise<Product[]> {
+    const products = await prisma.product.findMany({
+      include: {
+        seller: true,
+        categories: true,
+      },
+    });
+
+    return products;
+  }
+
   async createProduct(
     title: string,
     categoryIds: UUID[],

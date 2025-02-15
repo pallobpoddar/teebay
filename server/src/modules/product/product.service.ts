@@ -6,6 +6,12 @@ import { GraphQLError } from "graphql";
 import categoryRepository from "../category/category.repository";
 
 class ProductService {
+  async getAllProducts(): Promise<Product[]> {
+    const products = await productRepository.getAllProducts();
+
+    return products;
+  }
+  
   async createProduct(
     title: string,
     categoryIds: UUID[],

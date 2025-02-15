@@ -14,10 +14,20 @@ type Product {
   seller: User!
 }
 
-type ProductResponse {
+type ProductCreationResponse {
   success: Boolean!
   message: String!
   data: Product
+}
+
+type ProductRetrieveResponse {
+  success: Boolean!
+  message: String!
+  data: [Product!]
+}
+
+type Query {
+  getAllProducts: ProductRetrieveResponse!
 }
 
 type Mutation {
@@ -29,5 +39,5 @@ type Mutation {
     rent: Float!
     rentOption: RentOption!
     sellerId: ID!
-  ): ProductResponse!
+  ): ProductCreationResponse!
 }
