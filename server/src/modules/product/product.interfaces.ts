@@ -1,6 +1,6 @@
 import { UUID } from "crypto";
 
-interface ProductArgs {
+interface ProductCreationArgs {
   title: string;
   categoryIds: UUID[];
   description: string;
@@ -10,4 +10,14 @@ interface ProductArgs {
   sellerId: UUID;
 }
 
-export { ProductArgs };
+interface ProductUpdateArgs {
+  productId: UUID,
+  title?: string;
+  categoryIds?: UUID[];
+  description?: string;
+  price?: number;
+  rent?: number;
+  rentOption?: "hr" | "day";
+}
+
+export { ProductCreationArgs, ProductUpdateArgs };

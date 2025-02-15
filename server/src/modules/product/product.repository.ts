@@ -26,6 +26,18 @@ class ProductRepository {
     return products;
   }
 
+  async getProductById(id: UUID): Promise<Product | null> {
+    const product = await prisma.product.findUnique({
+      where: { id },
+      include: {
+        seller: true,
+        categories: true,
+      },
+    });
+
+    return product;
+  }
+
   async createProduct(
     title: string,
     categoryIds: UUID[],
@@ -44,6 +56,34 @@ class ProductRepository {
         rent,
         rentOption,
         seller: { connect: { id: sellerId } },
+      },
+      include: {
+        seller: true,
+        categories: true,
+      },
+    });
+
+    return product;
+  }
+
+  async updateProduct(
+    id: UUID,
+    title?: string,
+    categoryIds?: UUID[],
+    description?: string,
+    price?: number,
+    rent?: number,
+    rentOption?: "hr" | "day"
+  ): Promise<Product> {
+    const product = await prisma.product.update({
+      where: { id },
+      data: {
+        title,
+        categories: { connect: categoryIds?.map((id: UUID) => ({ id })) },
+        description,
+        price,
+        rent,
+        rentOption,
       },
       include: {
         seller: true,

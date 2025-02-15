@@ -60,6 +60,35 @@ class ProductService {
 
     return product;
   }
+
+  async updateProduct(
+    productId: UUID,
+    title?: string,
+    categoryIds?: UUID[],
+    description?: string,
+    price?: number,
+    rent?: number,
+    rentOption?: "hr" | "day",
+  ): Promise<Product> {
+    const existingProduct = await productRepository.getProductById(productId);
+    if (!existingProduct) {
+      throw new GraphQLError("Product not found", {
+        extensions: { code: "NOT_FOUND" },
+      });
+    }
+    
+    const product = await productRepository.updateProduct(
+      productId,
+      title,
+      categoryIds,
+      description,
+      price,
+      rent,
+      rentOption
+    );
+
+    return product;
+  }
 }
 
 export default new ProductService();

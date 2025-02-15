@@ -1,6 +1,6 @@
 import { handleSuccess, handleError } from "../../utils/graphqlResponse";
 import productService from "./product.service";
-import { ProductArgs } from "./product.interfaces";
+import { ProductCreationArgs, ProductUpdateArgs } from "./product.interfaces";
 import { UUID } from "crypto";
 
 const productResolvers = {
@@ -31,7 +31,7 @@ const productResolvers = {
   },
 
   Mutation: {
-    createProduct: async (_: any, args: ProductArgs) => {
+    createProduct: async (_: any, args: ProductCreationArgs) => {
       try {
         const {
           title,
@@ -54,6 +54,28 @@ const productResolvers = {
         );
 
         return handleSuccess("Successfully created product", product);
+      } catch (error) {
+        console.error(error);
+        return handleError(error);
+      }
+    },
+
+    updateProduct: async (_: any, args: ProductUpdateArgs) => {
+      try {
+        const { productId, title, categoryIds, description, price, rent, rentOption } =
+          args;
+
+        const product = await productService.updateProduct(
+          productId,
+          title,
+          categoryIds,
+          description,
+          price,
+          rent,
+          rentOption
+        );
+
+        return handleSuccess("Successfully updated product", product);
       } catch (error) {
         console.error(error);
         return handleError(error);

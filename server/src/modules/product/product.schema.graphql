@@ -14,7 +14,7 @@ type Product {
   seller: User!
 }
 
-type ProductCreationResponse {
+type ProductMutationResponse {
   success: Boolean!
   message: String!
   data: Product
@@ -40,5 +40,15 @@ type Mutation {
     rent: Float!
     rentOption: RentOption!
     sellerId: ID!
-  ): ProductCreationResponse!
+  ): ProductMutationResponse!
+
+  updateProduct(
+    productId: ID!
+    title: String
+    categoryIds: [ID!]
+    description: String
+    price: Float
+    rent: Float
+    rentOption: RentOption
+  ): ProductMutationResponse!
 }
