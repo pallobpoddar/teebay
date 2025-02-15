@@ -3,9 +3,11 @@ import { User } from "@prisma/client";
 
 class UserRepository {
   async findByEmail(email: string): Promise<User | null> {
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
     });
+
+    return user;
   }
 
   async create(data: {
@@ -15,9 +17,11 @@ class UserRepository {
     phone: string;
     password: string;
   }) {
-    return await prisma.user.create({
+    const user = await prisma.user.create({
       data,
     });
+
+    return user;
   }
 }
 

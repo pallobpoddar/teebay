@@ -6,7 +6,7 @@ type User {
   address: String!
 }
 
-type BaseResponse {
+type UserResponse {
   success: Boolean!
   message: String!
   data: User
@@ -24,7 +24,7 @@ type Mutation {
     phone: String!
     password: String!
     confirmPassword: String!
-  ): BaseResponse!
+  ): UserResponse!
 
-  signIn(email: String!, password: String!): BaseResponse!
+  signIn(email: String!, password: String!): UserResponse!
 }
