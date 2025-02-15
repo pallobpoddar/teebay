@@ -6,6 +6,19 @@ import userRepository from "../user/user.repository";
 import purchaseRepository from "./purchase.repository";
 
 class PurchaseService {
+  async getPurchasesByUserId(userId: UUID): Promise<Purchase[]> {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new GraphQLError("User not found", {
+        extensions: { code: "NOT_FOUND" },
+      });
+    }
+
+    const purchases = await purchaseRepository.getPurchasesByUserId(userId);
+
+    return purchases;
+  }
+
   async createPurchase(productId: UUID, buyerId: UUID): Promise<Purchase> {
     const product = await productRepository.findById(productId);
     if (!product) {

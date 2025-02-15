@@ -3,6 +3,21 @@ import { handleError, handleSuccess } from "../../utils/graphqlResponse";
 import purchaseService from "./purchase.service";
 
 const purchaseResolvers = {
+  Query: {
+    getPurchasesByUserId: async (_: any, args: { userId: UUID }) => {
+      try {
+        const { userId } = args;
+
+        const purchases = await purchaseService.getPurchasesByUserId(userId);
+
+        return handleSuccess("Successfully fetched purchases", purchases);
+      } catch (error) {
+        console.error(error);
+        return handleError(error);
+      }
+    },
+  },
+
   Mutation: {
     createPurchase: async (
       _: any,

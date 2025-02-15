@@ -3,6 +3,25 @@ import { UUID } from "crypto";
 import prisma from "../../config/prismaClient";
 
 class PurchaseRepository {
+  async getPurchasesByUserId(userId: UUID): Promise<Purchase[]> {
+    const purchases = await prisma.purchase.findMany({
+      where: {
+        OR: [{ buyerId: userId }, { product: { sellerId: userId } }],
+      },
+      include: {
+        product: {
+          include: {
+            categories: true,
+            seller: true,
+          },
+        },
+        buyer: true,
+      },
+    });
+
+    return purchases;
+  }
+
   async createPurchase(productId: UUID, buyerId: UUID): Promise<Purchase> {
     const purchase = await prisma.purchase.create({
       data: {

@@ -13,6 +13,16 @@ type PurchaseMutationResponse {
   data: Purchase
 }
 
+type PurchaseRetrieveResponse {
+  success: Boolean!
+  message: String!
+  data: [Purchase!]
+}
+
+type Query {
+  getPurchasesByUserId(userId: ID!): PurchaseRetrieveResponse!
+}
+
 type Mutation {
   createPurchase(productId: ID!, buyerId: ID!): PurchaseMutationResponse!
 }
