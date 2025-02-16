@@ -4,14 +4,15 @@
   --color-purple: #6766f5;
   --color-raspberry: #d3455b;
   --color-gray: #c3cfd9;
+  --color-slate-gray: #6f7d89;
 }
 
 .button-primary {
-  @apply px-4 py-2 rounded-md text-white uppercase cursor-pointer bg-purple;
+  @apply px-4 py-2 rounded-md text-white cursor-pointer bg-purple;
 }
 
 .button-secondary {
-  @apply px-4 py-2 rounded-md text-white uppercase cursor-pointer bg-raspberry;
+  @apply px-4 py-2 rounded-md text-white cursor-pointer bg-raspberry;
 }
 
 html {
