@@ -6,6 +6,19 @@ import userRepository from "../user/user.repository";
 import rentalRepository from "./rental.repository";
 
 class RentalService {
+  async getRentalsByUserId(userId: UUID): Promise<Rental[]> {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new GraphQLError("User not found", {
+        extensions: { code: "NOT_FOUND" },
+      });
+    }
+
+    const rentals = await rentalRepository.getRentalsByUserId(userId);
+
+    return rentals;
+  }
+  
   async createRental(
     productId: UUID,
     borrowerId: UUID,

@@ -12,6 +12,16 @@ type RentalMutationResponse {
   data: Rental
 }
 
+type RentalRetrieveResponse {
+  success: Boolean!
+  message: String!
+  data: [Rental!]
+}
+
+type Query {
+  getRentalsByUserId(userId: ID!): RentalRetrieveResponse!
+}
+
 type Mutation {
   createRental(
     productId: ID!
