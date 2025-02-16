@@ -6,6 +6,14 @@
   --color-gray: #c3cfd9;
 }
 
+.button-primary {
+  @apply px-4 py-2 rounded-md text-white uppercase cursor-pointer bg-purple;
+}
+
+.button-secondary {
+  @apply px-4 py-2 rounded-md text-white uppercase cursor-pointer bg-raspberry;
+}
+
 html {
   padding: 20px;
 }

@@ -7,6 +7,7 @@ type Props = {
   type?: "text" | "email" | "password" | "datetime-local";
   autocomplete?: string;
   includePasswordIcon?: boolean;
+  className?: string;
   field?: any;
 };
 
@@ -20,7 +21,7 @@ const Input = (props: Props) => {
   return (
     <div className="relative flex items-center">
       <input
-        className="border-2 border-gray p-3 w-full rounded-sm"
+        className="border-2 border-gray p-3 w-full rounded-sm focus:outline-purple"
         type={inputType}
         placeholder={props.placeholder}
         autoComplete={props.autocomplete}

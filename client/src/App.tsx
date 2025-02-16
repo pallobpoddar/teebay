@@ -1,19 +1,20 @@
 import Button from "./components/atoms/Button";
 import DeleteIcon from "./assets/icons/delete-icon.svg?react";
 import Input from "./components/atoms/Input";
+import MultiSelect from "./components/molecules/MultiSelect";
 
 function App() {
   return (
     <>
-      <Button variant="primary" onClick={() => {}}>
+      <Button variant="button-primary" onClick={() => {}}>
         Register
       </Button>
       <div className="p-4"></div>
-      <Button variant="secondary" onClick={() => {}}>
+      <Button variant="button-secondary" onClick={() => {}}>
         Logout
       </Button>
       <div className="p-4"></div>
-      <Button onClick={() => {}}>
+      <Button className="cursor-pointer" onClick={() => {}}>
         <DeleteIcon />
       </Button>
       <div className="p-4"></div>
@@ -27,6 +28,18 @@ function App() {
       />
       <div className="p-4"></div>
       <Input placeholder="Password" type="password" autocomplete="on" />
+      <div className="p-4"></div>
+      <MultiSelect
+        placeholder="Select a category"
+        multiple
+        options={[
+          { id: "1", name: "Electronics" },
+          { id: "2", name: "Clothing" },
+          { id: "3", name: "Home" },
+          { id: "4", name: "Garden" },
+          { id: "5", name: "Toys" },
+        ]}
+      />
     </>
   );
 }
