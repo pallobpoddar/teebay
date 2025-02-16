@@ -5,6 +5,20 @@ import { Product } from "@prisma/client";
 class ProductRepository {
   async getAllProducts(): Promise<Product[]> {
     const products = await prisma.product.findMany({
+      where: {
+        AND: [
+          {
+            NOT: {
+              rentals: {
+                some: {},
+              },
+            },
+          },
+          {
+            purchase: null,
+          },
+        ],
+      },
       include: {
         seller: true,
         categories: true,
