@@ -1,3 +1,5 @@
+import clsx from "clsx/lite";
+
 type Props = {
   variant?: "button-primary" | "button-secondary";
   className?: string;
@@ -8,7 +10,7 @@ type Props = {
 const Button = (props: Props) => {
   return (
     <button
-      className={`${props.variant} ${props.className}`}
+      className={clsx(props.variant, props.className)}
       onClick={props.onClick}
     >
       {props.children}

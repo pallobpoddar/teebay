@@ -7,7 +7,6 @@ type Props = {
   type?: "text" | "email" | "password" | "datetime-local";
   autocomplete?: string;
   includePasswordIcon?: boolean;
-  className?: string;
   field?: any;
 };
 

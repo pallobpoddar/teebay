@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Button from "../atoms/Button";
 import CloseIcon from "../../assets/icons/close-icon.svg?react";
 import UnfoldMoreIcon from "../../assets/icons/unfold-more-icon.svg?react";
@@ -10,14 +10,13 @@ type Option = {
 
 type Props = {
   placeholder: string;
-  multiple?: boolean;
   options: Option[];
 };
 
 const MultiSelect = (props: Props) => {
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -32,6 +31,21 @@ const MultiSelect = (props: Props) => {
       selectedOptions.filter((prevOption) => prevOption !== option)
     );
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
@@ -67,11 +81,11 @@ const MultiSelect = (props: Props) => {
         </span>
       </div>
       {isOpen && (
-        <ul className="absolute mt-1 w-full border-2 border-gray rounded-sm shadow-md z-10">
+        <ul className="absolute mt-1 w-full bg-white border-2 border-gray rounded-sm shadow-md z-10">
           {props.options.map((option) => (
             <li
               key={option.id}
-              className="p-2 hover:bg-gray-100 cursor-pointer"
+              className="p-2 hover:bg-purple cursor-pointer"
               onClick={() => selectOption(option)}
             >
               {option.name}
