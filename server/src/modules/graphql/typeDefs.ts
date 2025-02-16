@@ -21,6 +21,11 @@ const purchaseTypeDefs = readFileSync(
   "utf-8"
 );
 
-const typeDefs = `${userTypeDefs}\n${categoryTypeDefs}\n${productTypeDefs}\n${purchaseTypeDefs}`;
+const rentalTypeDefs = readFileSync(
+  path.join(__dirname, "../rental/rental.schema.graphql"),
+  "utf-8"
+);
+
+const typeDefs = `${userTypeDefs}\n${categoryTypeDefs}\n${productTypeDefs}\n${purchaseTypeDefs}\n${rentalTypeDefs}`;
 
 export default typeDefs;

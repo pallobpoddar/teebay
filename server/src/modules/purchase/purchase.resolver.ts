@@ -31,7 +31,7 @@ const purchaseResolvers = {
           buyerId
         );
 
-        return handleSuccess("Successfully created purchase", purchase);
+        return handleSuccess("Successfully bought the product", purchase);
       } catch (error) {
         console.error(error);
         return handleError(error);

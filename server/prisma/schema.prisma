@@ -16,6 +16,7 @@ model User {
   password  String
   products  Product[]  @relation("SellerProducts")
   purchases Purchase[]
+  rentals   Rental[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
@@ -44,6 +45,7 @@ model Product {
   sellerId    String
   seller      User       @relation("SellerProducts", fields: [sellerId], references: [id])
   purchase    Purchase?
+  rentals     Rental[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
@@ -56,4 +58,16 @@ model Purchase {
   buyer     User     @relation(fields: [buyerId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Rental {
+  id            String   @id @default(uuid())
+  productId     String
+  borrowerId    String
+  rentStartDate DateTime
+  rentEndDate   DateTime
+  product       Product  @relation(fields: [productId], references: [id])
+  borrower      User     @relation(fields: [borrowerId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

@@ -1,0 +1,22 @@
+type Rental {
+  id: ID!
+  product: Product!
+  borrower: User!
+  rentStartDate: Date!
+  rentEndDate: Date!
+}
+
+type RentalMutationResponse {
+  success: Boolean!
+  message: String!
+  data: Rental
+}
+
+type Mutation {
+  createRental(
+    productId: ID!
+    borrowerId: ID!
+    rentStartDate: Date!
+    rentEndDate: Date!
+  ): RentalMutationResponse!
+}
