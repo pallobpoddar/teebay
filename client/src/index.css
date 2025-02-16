@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --color-purple: #6766f5;
+  --color-raspberry: #d3455b;
+}
+
+html {
+  padding: 20px;
+}
