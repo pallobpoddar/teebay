@@ -8,6 +8,7 @@ type Props = {
   autocomplete?: string;
   includePasswordIcon?: boolean;
   field?: any;
+  style?: React.CSSProperties;
 };
 
 const Input = (props: Props) => {
@@ -25,6 +26,7 @@ const Input = (props: Props) => {
         placeholder={props.placeholder}
         autoComplete={props.autocomplete}
         {...props.field}
+        style={props.style}
       />
       {props.includePasswordIcon && (
         <span
