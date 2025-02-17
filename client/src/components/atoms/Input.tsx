@@ -7,8 +7,8 @@ type Props = {
   type?: "text" | "email" | "password" | "datetime-local";
   autocomplete?: string;
   includePasswordIcon?: boolean;
-  field?: any;
-  style?: React.CSSProperties;
+  field?: React.InputHTMLAttributes<HTMLInputElement>;
+  error?: boolean;
 };
 
 const Input = (props: Props) => {
@@ -21,12 +21,15 @@ const Input = (props: Props) => {
   return (
     <div className="relative flex items-center">
       <input
-        className="border-2 border-gray p-3 w-full rounded-sm focus:outline-purple"
+        className={`p-3 w-full rounded-sm ${
+          props.error
+            ? `border border-red-500 focus:outline-red-500`
+            : `focus:outline-purple border-2 border-gray`
+        } `}
         type={inputType}
         placeholder={props.placeholder}
         autoComplete={props.autocomplete}
         {...props.field}
-        style={props.style}
       />
       {props.includePasswordIcon && (
         <span

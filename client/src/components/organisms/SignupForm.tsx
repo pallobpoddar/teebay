@@ -52,13 +52,15 @@ const SignupForm = () => {
               placeholder="First name"
               autocomplete="on"
               field={field}
-              style={{ border: errors.firstName && "1px solid red" }}
+              error={errors.firstName && true}
             />
           )}
         />
 
         {errors.firstName && (
-          <p className="text-sm my-1">{errors.firstName.message}</p>
+          <p className="text-sm text-red-500 my-1">
+            {errors.firstName.message}
+          </p>
         )}
       </div>
 
@@ -75,13 +77,13 @@ const SignupForm = () => {
               placeholder="Last name"
               autocomplete="on"
               field={field}
-              style={{ border: errors.lastName && "1px solid red" }}
+              error={errors.lastName && true}
             />
           )}
         />
 
         {errors.lastName && (
-          <p className="text-sm my-1">{errors.lastName.message}</p>
+          <p className="text-sm text-red-500 my-1">{errors.lastName.message}</p>
         )}
       </div>
 
@@ -98,17 +100,17 @@ const SignupForm = () => {
               placeholder="Address"
               autocomplete="on"
               field={field}
-              style={{ border: errors.address && "1px solid red" }}
+              error={errors.address && true}
             />
           )}
         />
 
         {errors.address && (
-          <p className="text-sm my-1">{errors.address.message}</p>
+          <p className="text-sm text-red-500 my-1">{errors.address.message}</p>
         )}
       </div>
 
-      <div className="flex gap-5 items-center justify-between">
+      <div className="flex gap-5 items-start justify-between">
         <div>
           <Controller
             name="email"
@@ -127,13 +129,13 @@ const SignupForm = () => {
                 type="email"
                 autocomplete="on"
                 field={field}
-                style={{ border: errors.email && "1px solid red" }}
+                error={errors.email && true}
               />
             )}
           />
 
           {errors.email && (
-            <p className="text-sm my-1">{errors.email.message}</p>
+            <p className="text-sm text-red-500 my-1">{errors.email.message}</p>
           )}
         </div>
 
@@ -150,13 +152,13 @@ const SignupForm = () => {
                 placeholder="Phone Number"
                 autocomplete="on"
                 field={field}
-                style={{ border: errors.phone && "1px solid red" }}
+                error={errors.phone && true}
               />
             )}
           />
 
           {errors.phone && (
-            <p className="text-sm my-1">{errors.phone.message}</p>
+            <p className="text-sm text-red-500 my-1">{errors.phone.message}</p>
           )}
         </div>
       </div>
@@ -175,12 +177,6 @@ const SignupForm = () => {
               value: 20,
               message: "Character limit exceeded",
             },
-            pattern: {
-              value:
-                /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/])[A-Za-z\d~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]{8,20}$/,
-              message:
-                "Password must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number and 1 symbol",
-            },
           }}
           render={({ field }) => (
             <Input
@@ -189,13 +185,13 @@ const SignupForm = () => {
               autocomplete="on"
               includePasswordIcon
               field={field}
-              style={{ border: errors.password && "1px solid red" }}
+              error={errors.password && true}
             />
           )}
         />
 
         {errors.password && (
-          <p className="text-sm my-1">{errors.password.message}</p>
+          <p className="text-sm text-red-500 my-1">{errors.password.message}</p>
         )}
       </div>
 
@@ -214,17 +210,19 @@ const SignupForm = () => {
               type="password"
               includePasswordIcon
               field={field}
-              style={{ border: errors.password && "1px solid red" }}
+              error={errors.confirmPassword && true}
             />
           )}
         />
 
-        {errors.password && (
-          <p className="text-sm my-1">{errors.password.message}</p>
+        {errors.confirmPassword && (
+          <p className="text-sm text-red-500 my-1">
+            {errors.confirmPassword.message}
+          </p>
         )}
       </div>
 
-      <Button type="submit">REGISTER</Button>
+      <Button type="submit" variant="button-primary" text="REGISTER" />
     </form>
   );
 };
