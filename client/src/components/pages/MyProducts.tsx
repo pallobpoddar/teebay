@@ -3,6 +3,7 @@ import IProduct from "../../interfaces/IProduct";
 import CardList from "../templates/CardList";
 import { useState } from "react";
 import Modal from "../organisms/Modal";
+import { Link } from "react-router-dom";
 
 const products: IProduct[] = [
   {
@@ -56,11 +57,13 @@ const MyProducts = () => {
         />
       )}
       <div className="flex justify-end gap-4 mx-6 my-4">
-        <Button
-          text="ADD PRODUCT"
-          variant="button-primary"
-          onClick={() => {}}
-        />
+        <Link to={"/products/creation"} className="text-blue">
+          <Button
+            text="ADD PRODUCT"
+            variant="button-primary"
+            onClick={() => {}}
+          />
+        </Link>
         <Button text="LOGOUT" variant="button-secondary" onClick={() => {}} />
       </div>
       <CardList
