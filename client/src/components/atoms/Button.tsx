@@ -1,9 +1,10 @@
 import clsx from "clsx/lite";
 
 type Props = {
+  type?: "button" | "submit";
   variant?: "button-primary" | "button-secondary";
   className?: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   children?: React.ReactNode;
 };
 

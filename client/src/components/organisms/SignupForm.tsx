@@ -1,7 +1,8 @@
 import { Controller, useForm } from "react-hook-form";
 import Input from "../atoms/Input";
+import Button from "../atoms/Button";
 
-const SignUpForm = () => {
+const SignupForm = () => {
   const {
     handleSubmit,
     control,
@@ -23,8 +24,7 @@ const SignUpForm = () => {
 
   const handlerOnSubmit = async () => {
     const data = {
-      firstName: getValues("firstName"),
-      lastName: getValues("lastName"),
+      name: getValues("firstName") + " " + getValues("lastName"),
       address: getValues("address"),
       email: getValues("email"),
       phone: getValues("phone"),
@@ -108,51 +108,57 @@ const SignUpForm = () => {
         )}
       </div>
 
-      <div>
-        <Controller
-          name="email"
-          control={control}
-          rules={{
-            required: "Email is required",
-            maxLength: { value: 320, message: "Invalid email format" },
-            pattern: {
-              value: /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/,
-              message: "Invalid email format",
-            },
-          }}
-          render={({ field }) => (
-            <Input
-              placeholder="Email"
-              type="email"
-              autocomplete="on"
-              field={field}
-              style={{ border: errors.email && "1px solid red" }}
-            />
+      <div className="flex gap-5 items-center justify-between">
+        <div>
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: "Email is required",
+              maxLength: { value: 320, message: "Invalid email format" },
+              pattern: {
+                value: /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/,
+                message: "Invalid email format",
+              },
+            }}
+            render={({ field }) => (
+              <Input
+                placeholder="Email"
+                type="email"
+                autocomplete="on"
+                field={field}
+                style={{ border: errors.email && "1px solid red" }}
+              />
+            )}
+          />
+
+          {errors.email && (
+            <p className="text-sm my-1">{errors.email.message}</p>
           )}
-        />
+        </div>
 
-        {errors.email && <p className="text-sm my-1">{errors.email.message}</p>}
-      </div>
+        <div>
+          <Controller
+            name="phone"
+            control={control}
+            rules={{
+              required: "Phone is required",
+              maxLength: { value: 20, message: "Character limit exceeded" },
+            }}
+            render={({ field }) => (
+              <Input
+                placeholder="Phone Number"
+                autocomplete="on"
+                field={field}
+                style={{ border: errors.phone && "1px solid red" }}
+              />
+            )}
+          />
 
-      <div>
-        <Controller
-          name="phone"
-          control={control}
-          rules={{
-            required: "Phone is required",
-            maxLength: { value: 20, message: "Character limit exceeded" },
-          }}
-          render={({ field }) => (
-            <Input
-              placeholder="Phone Number"
-              autocomplete="on"
-              field={field}
-              style={{ border: errors.phone && "1px solid red" }}
-            />
+          {errors.phone && (
+            <p className="text-sm my-1">{errors.phone.message}</p>
           )}
-        />
-
-        {errors.phone && <p className="text-sm my-1">{errors.phone.message}</p>}
+        </div>
       </div>
 
       <div>
@@ -199,26 +205,13 @@ const SignUpForm = () => {
           control={control}
           rules={{
             required: "Confirm Password is required",
-            minLength: {
-              value: 8,
-              message: "Password must be at least 8 characters",
-            },
-            maxLength: {
-              value: 20,
-              message: "Character limit exceeded",
-            },
-            pattern: {
-              value:
-                /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/])[A-Za-z\d~`!@#$%^&*()_\-+={[}\]|\\:;"'<,>.?/]{8,20}$/,
-              message:
-                "Password must contain at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number and 1 symbol",
-            },
+            validate: (value) =>
+              value === watch("password") || "Passwords do not match",
           }}
           render={({ field }) => (
             <Input
-              placeholder="Password"
+              placeholder="Confirm Password"
               type="password"
-              autocomplete="on"
               includePasswordIcon
               field={field}
               style={{ border: errors.password && "1px solid red" }}
@@ -230,8 +223,10 @@ const SignUpForm = () => {
           <p className="text-sm my-1">{errors.password.message}</p>
         )}
       </div>
+
+      <Button type="submit">REGISTER</Button>
     </form>
   );
 };
 
-export default SignUpForm;
+export default SignupForm;
