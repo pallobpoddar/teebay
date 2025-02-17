@@ -25,7 +25,10 @@ const SigninForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handlerOnSubmit)}>
+    <form
+      className="flex flex-col gap-5 my-5"
+      onSubmit={handleSubmit(handlerOnSubmit)}
+    >
       <div>
         <Controller
           name="email"
@@ -43,11 +46,13 @@ const SigninForm = () => {
               placeholder="Email"
               autocomplete="on"
               field={field}
-              style={{ border: errors.email && "1px solid red" }}
+              error={errors.email && true}
             />
           )}
         />
-        {errors.email && <p>{errors.email.message}</p>}
+        {errors.email && (
+          <p className="text-sm text-red-500 my-1">{errors.email.message}</p>
+        )}
       </div>
 
       <div>
@@ -67,14 +72,16 @@ const SigninForm = () => {
               placeholder="Password"
               autocomplete="on"
               field={field}
-              style={{ border: errors.password && "1px solid red" }}
+              error={errors.password && true}
             />
           )}
         />
-        {errors.password && <p>{errors.password.message}</p>}
+        {errors.password && (
+          <p className="text-sm text-red-500 my-1">{errors.password.message}</p>
+        )}
       </div>
 
-      <Button type="submit">LOGIN</Button>
+      <Button type="submit" variant="button-primary" text="SIGN IN"></Button>
     </form>
   );
 };

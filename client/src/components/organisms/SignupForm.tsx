@@ -222,7 +222,7 @@ const SignupForm = () => {
         )}
       </div>
 
-      <Button type="submit" variant="button-primary" text="REGISTER" />
+      <Button type="submit" variant="button-primary" text="SIGN UP" />
     </form>
   );
 };
