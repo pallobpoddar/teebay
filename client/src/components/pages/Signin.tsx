@@ -1,7 +1,15 @@
-import SigninBox from "../templates/SigninBox";
+import SigninForm from "../organisms/SigninForm";
+import FormBox from "../templates/FormBox";
 
 const Signin = () => {
-  return <SigninBox />;
+  return (
+    <FormBox
+      title="Sign In"
+      form={SigninForm}
+      text="Don't have an account?"
+      link="/signup"
+    />
+  );
 };
 
 export default Signin;
