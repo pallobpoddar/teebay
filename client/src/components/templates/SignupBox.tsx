@@ -5,13 +5,13 @@ const SignupBox = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col p-12 border-2 border-gray rounded-xs">
-        <h1 className="text-3xl text-center">SIGN UP</h1>
+        <h1 className="text-3xl text-jet-black text-center">SIGN UP</h1>
         <SignupForm />
         <p className="text-center">
           Already have an account?{" "}
           <Link
             to="/signin"
-            style={{ textDecoration: "none", color: "#3d92dc" }}
+            className="text-blue"
           >
             Sign in
           </Link>
