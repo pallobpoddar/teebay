@@ -1,7 +1,7 @@
-import MultiPageForm from "../organisms/MultiPageForm";
+import MultiPageFormBox from "../templates/MultiPageFormBox";
 
 const ProductCreation = () => {
-  return <MultiPageForm />;
+  return <MultiPageFormBox />;
 };
 
 export default ProductCreation;

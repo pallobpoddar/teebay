@@ -1,4 +1,5 @@
 type Props = {
+  rows?: number;
   field?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
   error?: boolean;
 };
@@ -6,6 +7,7 @@ type Props = {
 const TextArea = (props: Props) => {
   return (
     <textarea
+      rows={props.rows}
       className={`w-full rounded-sm ${
         props.error
           ? `border border-red-500 focus:outline-red-500`

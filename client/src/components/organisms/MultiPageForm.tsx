@@ -4,6 +4,7 @@ import Input from "../atoms/Input";
 import Button from "../atoms/Button";
 import MultiSelect from "../molecules/MultiSelect";
 import Select from "../molecules/Select";
+import TextArea from "../atoms/TextArea";
 
 type Category = {
   id: string;
@@ -53,7 +54,6 @@ const MultiStepForm = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("Final Data:", data);
-    alert("Form submitted successfully!");
   };
 
   const stepValidationFields: Record<number, Array<keyof FormData>> = {
@@ -77,117 +77,115 @@ const MultiStepForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {step === 0 && (
-          <div className="space-y-2">
-            <p className="text-2xl font-medium text-jet-black text-center">
-              Select a title for your product
-            </p>
-            <Controller
-              name="title"
-              control={control}
-              rules={{ required: "Title is required" }}
-              render={({ field }) => (
-                <Input field={field} type="text" error={errors.title && true} />
-              )}
-            />
-
-            {errors.title && (
-              <p className="text-sm text-red-500 my-1">
-                {errors.title.message}
-              </p>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {step === 0 && (
+        <div className="space-y-2">
+          <p className="text-2xl font-medium text-jet-black text-center">
+            Select a title for your product
+          </p>
+          <Controller
+            name="title"
+            control={control}
+            rules={{ required: "Title is required" }}
+            render={({ field }) => (
+              <Input field={field} type="text" error={errors.title && true} />
             )}
-          </div>
-        )}
+          />
 
-        {step === 1 && (
-          <div className="space-y-2">
-            <p className="text-2xl font-medium text-jet-black text-center">
-              Select Categories
-            </p>
-            <Controller
-              name="categories"
-              control={control}
-              rules={{ required: "Category is required" }}
-              render={({ field }) => (
-                <MultiSelect
-                  options={categoryOptions}
-                  placeholder="Select a category"
-                  onChange={(selected) => {
-                    field.onChange(selected);
-                    setValue("categories", selected);
-                  }}
-                  error={errors.categories && true}
-                />
-              )}
-            />
+          {errors.title && (
+            <p className="text-sm text-red-500 my-1">{errors.title.message}</p>
+          )}
+        </div>
+      )}
 
-            {errors.categories && (
-              <p className="text-red-500 text-sm my-1">
-                {errors.categories.message}
-              </p>
+      {step === 1 && (
+        <div className="space-y-2">
+          <p className="text-2xl font-medium text-jet-black text-center">
+            Select Categories
+          </p>
+          <Controller
+            name="categories"
+            control={control}
+            rules={{ required: "Category is required" }}
+            render={({ field }) => (
+              <MultiSelect
+                options={categoryOptions}
+                placeholder="Select a category"
+                onChange={(selected) => {
+                  field.onChange(selected);
+                  setValue("categories", selected);
+                }}
+                error={errors.categories && true}
+              />
             )}
-          </div>
-        )}
+          />
 
-        {step === 2 && (
+          {errors.categories && (
+            <p className="text-red-500 text-sm my-1">
+              {errors.categories.message}
+            </p>
+          )}
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="space-y-2">
+          <p className="text-2xl font-medium text-jet-black text-center">
+            Select Description
+          </p>
+          <Controller
+            name="description"
+            control={control}
+            rules={{ required: "Description is required" }}
+            render={({ field }) => (
+              <TextArea
+                rows={8}
+                field={field}
+                error={errors.description && true}
+              />
+            )}
+          />
+
+          {errors.description && (
+            <p className="text-red-500 text-sm my-1">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className="space-y-4">
           <div className="space-y-2">
             <p className="text-2xl font-medium text-jet-black text-center">
-              Select Description
+              Select Price
             </p>
             <Controller
-              name="description"
+              name="price"
               control={control}
-              rules={{ required: "Description is required" }}
+              rules={{
+                required: "Price is required",
+                min: { value: 0, message: "Price must be positive" },
+              }}
               render={({ field }) => (
                 <div>
-                  <textarea
-                    {...field}
-                    className="w-full border rounded p-2 h-24"
+                  <Input
+                    field={field}
+                    type="number"
+                    placeholder="Purchase price"
                   />
-                  {errors.description && (
+                  {errors.price && (
                     <p className="text-red-500 text-sm mt-1">
-                      {errors.description.message}
+                      {errors.price.message}
                     </p>
                   )}
                 </div>
               )}
             />
           </div>
-        )}
 
-        {step === 3 && (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <p className="text-2xl font-medium text-jet-black text-center">
-                Select Price
-              </p>
-              <Controller
-                name="price"
-                control={control}
-                rules={{
-                  required: "Price is required",
-                  min: { value: 0, message: "Price must be positive" },
-                }}
-                render={({ field }) => (
-                  <div>
-                    <Input
-                      field={field}
-                      type="number"
-                      placeholder="Purchase price"
-                    />
-                    {errors.price && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.price.message}
-                      </p>
-                    )}
-                  </div>
-                )}
-              />
-            </div>
-
-            <div className="space-y-2">
+          <div className="flex gap-8">
+            <div className="space-y-2 w-1/2">
               <label className="block text-sm font-medium">Rent</label>
               <Controller
                 name="rent"
@@ -206,7 +204,7 @@ const MultiStepForm = () => {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 w-1/2">
               <label className="block text-sm font-medium">Rent Option</label>
               <Controller
                 name="rentOption"
@@ -225,32 +223,32 @@ const MultiStepForm = () => {
               />
             </div>
           </div>
+        </div>
+      )}
+
+      <div className="flex justify-between mt-6">
+        {step > 0 && (
+          <Button
+            type="button"
+            variant="button-primary"
+            text="Back"
+            onClick={prevStep}
+          />
         )}
 
-        <div className="flex justify-between mt-6">
-          {step > 0 && (
-            <Button
-              type="button"
-              variant="button-primary"
-              text="Back"
-              onClick={prevStep}
-            />
-          )}
-
-          {step < 3 ? (
-            <Button
-              type="button"
-              variant="button-primary"
-              text="Next"
-              onClick={nextStep}
-              className="ml-auto"
-            />
-          ) : (
-            <Button type="submit" variant="button-primary" text="Submit" />
-          )}
-        </div>
-      </form>
-    </div>
+        {step < 3 ? (
+          <Button
+            type="button"
+            variant="button-primary"
+            text="Next"
+            onClick={nextStep}
+            className="ml-auto"
+          />
+        ) : (
+          <Button type="submit" variant="button-primary" text="Submit" />
+        )}
+      </div>
+    </form>
   );
 };
 
