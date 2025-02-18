@@ -12,6 +12,7 @@ type Product {
   rent: Float!
   rentOption: RentOption!
   seller: User!
+  createdAt: Date!
 }
 
 type ProductMutationResponse {
