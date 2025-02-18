@@ -4,7 +4,7 @@ import VisibilityOffIcon from "../../assets/icons/visibility-off-icon.svg?react"
 
 type Props = {
   placeholder?: string;
-  type?: "text" | "email" | "password" | "datetime-local";
+  type?: "text" | "email" | "password" | "datetime-local" | "number";
   autocomplete?: string;
   includePasswordIcon?: boolean;
   field?: React.InputHTMLAttributes<HTMLInputElement>;

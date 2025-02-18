@@ -11,6 +11,7 @@ type Option = {
 type Props = {
   placeholder: string;
   options: Option[];
+  onChange: (selected: Option[]) => void;
 };
 
 const MultiSelect = (props: Props) => {
@@ -22,14 +23,18 @@ const MultiSelect = (props: Props) => {
 
   const selectOption = (option: Option) => {
     if (!selectedOptions.includes(option)) {
-      setSelectedOptions([...selectedOptions, option]);
+      const newSelectedOptions = [...selectedOptions, option];
+      setSelectedOptions(newSelectedOptions);
+      props.onChange(newSelectedOptions);
     }
   };
 
   const removeOption = (option: Option) => {
-    setSelectedOptions(
-      selectedOptions.filter((prevOption) => prevOption !== option)
+    const newSelectedOptions = selectedOptions.filter(
+      (prevOption) => prevOption.id !== option.id
     );
+    setSelectedOptions(newSelectedOptions);
+    props.onChange(newSelectedOptions);
   };
 
   useEffect(() => {
