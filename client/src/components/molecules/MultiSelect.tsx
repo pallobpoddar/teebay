@@ -12,6 +12,7 @@ type Props = {
   placeholder: string;
   options: Option[];
   onChange: (selected: Option[]) => void;
+  error?: boolean;
 };
 
 const MultiSelect = (props: Props) => {
@@ -55,7 +56,11 @@ const MultiSelect = (props: Props) => {
   return (
     <div className="relative w-full" ref={dropdownRef}>
       <div
-        className="border-2 border-gray rounded-sm cursor-pointer flex justify-between items-center overflow-auto"
+        className={`border-2 border-gray rounded-sm cursor-pointer flex justify-between items-center overflow-auto ${
+          props.error
+            ? `border border-red-500 focus:outline-red-500`
+            : `focus:outline-purple border-2 border-gray`
+        }`}
         onClick={toggleDropdown}
       >
         <div className="flex gap-1">

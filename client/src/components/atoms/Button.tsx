@@ -12,6 +12,7 @@ type Props = {
 const Button = (props: Props) => {
   return (
     <button
+      type={props.type}
       className={clsx(props.variant, props.className)}
       onClick={props.onClick}
     >

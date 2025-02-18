@@ -1,18 +1,15 @@
 type Props = {
-  placeholder: string;
-  options: string[];
-  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+  field?: React.SelectHTMLAttributes<HTMLSelectElement>;
 };
 
 const Select = (props: Props) => {
   return (
-    <select
-      className="border-2 border-gray rounded-sm outline-gray p-3 w-full"
-      onChange={(e) => props.onChange(e.target.value)}
-    >
-      <option>{props.placeholder}</option>
+    <select className="border-2 border-gray rounded-sm outline-gray p-3 w-full" {...props.field}>
       {props.options.map((option, index) => (
-        <option key={index}>{option}</option>
+        <option key={index} value={option.value}>
+          {option.label}
+        </option>
       ))}
     </select>
   );

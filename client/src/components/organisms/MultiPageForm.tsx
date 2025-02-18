@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import Input from "../atoms/Input";
+import Button from "../atoms/Button";
+import MultiSelect from "../molecules/MultiSelect";
+import Select from "../molecules/Select";
 
 type Category = {
   id: string;
@@ -35,10 +39,16 @@ const MultiStepForm = () => {
 
   const [step, setStep] = useState(0);
 
-  const categoriesOptions = [
+  const categoryOptions = [
     { id: "electronics", name: "Electronics" },
     { id: "furniture", name: "Furniture" },
     { id: "vehicles", name: "Vehicles" },
+  ];
+
+  const rentOptions = [
+    { value: "", label: "Select an option" },
+    { value: "hr", label: "per hr" },
+    { value: "day", label: "per day" },
   ];
 
   const onSubmit = (data: FormData) => {
@@ -46,8 +56,7 @@ const MultiStepForm = () => {
     alert("Form submitted successfully!");
   };
 
-  // Define validation rules for each step
-  const stepValidationFields = {
+  const stepValidationFields: Record<number, Array<keyof FormData>> = {
     0: ["title"],
     1: ["categories"],
     2: ["description"],
@@ -55,9 +64,7 @@ const MultiStepForm = () => {
   };
 
   const nextStep = async () => {
-    // Only validate fields for the current step
-    const currentStepFields =
-      stepValidationFields[step as keyof typeof stepValidationFields];
+    const currentStepFields = stepValidationFields[step];
     const isValid = await trigger(currentStepFields);
 
     if (isValid) {
@@ -74,71 +81,61 @@ const MultiStepForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {step === 0 && (
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Title</label>
+            <p className="text-2xl font-medium text-jet-black text-center">
+              Select a title for your product
+            </p>
             <Controller
               name="title"
               control={control}
               rules={{ required: "Title is required" }}
               render={({ field }) => (
-                <div>
-                  <input
-                    {...field}
-                    type="text"
-                    className="w-full border rounded p-2"
-                  />
-                  {errors.title && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.title.message}
-                    </p>
-                  )}
-                </div>
+                <Input field={field} type="text" error={errors.title && true} />
               )}
             />
+
+            {errors.title && (
+              <p className="text-sm text-red-500 my-1">
+                {errors.title.message}
+              </p>
+            )}
           </div>
         )}
 
         {step === 1 && (
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Categories</label>
+            <p className="text-2xl font-medium text-jet-black text-center">
+              Select Categories
+            </p>
             <Controller
               name="categories"
               control={control}
-              rules={{ required: "Please select at least one category" }}
+              rules={{ required: "Category is required" }}
               render={({ field }) => (
-                <div>
-                  <select
-                    multiple
-                    className="w-full border rounded p-2"
-                    onChange={(e) => {
-                      const selected = Array.from(e.target.selectedOptions).map(
-                        (option) => ({
-                          id: option.value,
-                          name: option.text,
-                        })
-                      );
-                      setValue("categories", selected);
-                    }}
-                  >
-                    {categoriesOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.categories && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.categories.message}
-                    </p>
-                  )}
-                </div>
+                <MultiSelect
+                  options={categoryOptions}
+                  placeholder="Select a category"
+                  onChange={(selected) => {
+                    field.onChange(selected);
+                    setValue("categories", selected);
+                  }}
+                  error={errors.categories && true}
+                />
               )}
             />
+
+            {errors.categories && (
+              <p className="text-red-500 text-sm my-1">
+                {errors.categories.message}
+              </p>
+            )}
           </div>
         )}
 
         {step === 2 && (
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Description</label>
+            <p className="text-2xl font-medium text-jet-black text-center">
+              Select Description
+            </p>
             <Controller
               name="description"
               control={control}
@@ -163,7 +160,9 @@ const MultiStepForm = () => {
         {step === 3 && (
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium">Price</label>
+              <p className="text-2xl font-medium text-jet-black text-center">
+                Select Price
+              </p>
               <Controller
                 name="price"
                 control={control}
@@ -173,10 +172,10 @@ const MultiStepForm = () => {
                 }}
                 render={({ field }) => (
                   <div>
-                    <input
-                      {...field}
+                    <Input
+                      field={field}
                       type="number"
-                      className="w-full border rounded p-2"
+                      placeholder="Purchase price"
                     />
                     {errors.price && (
                       <p className="text-red-500 text-sm mt-1">
@@ -196,11 +195,7 @@ const MultiStepForm = () => {
                 rules={{ min: { value: 0, message: "Rent must be positive" } }}
                 render={({ field }) => (
                   <div>
-                    <input
-                      {...field}
-                      type="number"
-                      className="w-full border rounded p-2"
-                    />
+                    <Input field={field} type="number" />
                     {errors.rent && (
                       <p className="text-red-500 text-sm mt-1">
                         {errors.rent.message}
@@ -216,14 +211,10 @@ const MultiStepForm = () => {
               <Controller
                 name="rentOption"
                 control={control}
-                rules={{ required: "Please select a rent option" }}
+                rules={{ required: "Rent option is required" }}
                 render={({ field }) => (
                   <div>
-                    <select {...field} className="w-full border rounded p-2">
-                      <option value="">Select option</option>
-                      <option value="hr">Per Hour</option>
-                      <option value="day">Per Day</option>
-                    </select>
+                    <Select options={rentOptions} field={field} />
                     {errors.rentOption && (
                       <p className="text-red-500 text-sm mt-1">
                         {errors.rentOption.message}
@@ -238,30 +229,24 @@ const MultiStepForm = () => {
 
         <div className="flex justify-between mt-6">
           {step > 0 && (
-            <button
+            <Button
               type="button"
+              variant="button-primary"
+              text="Back"
               onClick={prevStep}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
-            >
-              Back
-            </button>
+            />
           )}
 
           {step < 3 ? (
-            <button
+            <Button
               type="button"
+              variant="button-primary"
+              text="Next"
               onClick={nextStep}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors ml-auto"
-            >
-              Next
-            </button>
+              className="ml-auto"
+            />
           ) : (
-            <button
-              type="submit"
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors ml-auto"
-            >
-              Submit
-            </button>
+            <Button type="submit" variant="button-primary" text="Submit" />
           )}
         </div>
       </form>
