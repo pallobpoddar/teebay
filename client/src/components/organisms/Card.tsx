@@ -49,7 +49,8 @@ const Card = (props: Props) => {
       </p>
       <div className="flex items-center justify-between text-slate-gray font-medium">
         <p>
-          Date posted: <>{props.product.createdAt.toDateString()}</>
+          Date posted:{" "}
+          <>{new Date(props.product.createdAt).toISOString().split("T")[0]}</>
         </p>
         <p>156 views</p>
       </div>

@@ -6,6 +6,7 @@ type Props = {
   form: () => JSX.Element;
   text: string;
   link: string;
+  linkText: string;
 };
 
 const FormBox = (props: Props) => {
@@ -19,7 +20,7 @@ const FormBox = (props: Props) => {
         <p className="text-center">
           {props.text}{" "}
           <Link to={props.link} className="text-blue">
-            {props.title}
+            {props.linkText}
           </Link>
         </p>
       </div>

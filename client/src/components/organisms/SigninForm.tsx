@@ -1,6 +1,20 @@
 import { Controller, useForm } from "react-hook-form";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
+import { SIGN_IN } from "../../graphql/mutations/users";
+import { useMutation } from "@apollo/client";
+import { BeatLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
+import IUser from "../../interfaces/IUser";
+import { useNavigate } from "react-router-dom";
+import { GET_LOCAL_USER } from "../../graphql/queries/users";
+import client from "../../apollo/apolloClient";
+
+interface ISigninResponse {
+  success: boolean;
+  message: string;
+  data: IUser;
+}
 
 const SigninForm = () => {
   const {
@@ -16,12 +30,38 @@ const SigninForm = () => {
     },
   });
 
+  const [signIn, { loading, error }] = useMutation(SIGN_IN);
+  const navigate = useNavigate();
+
+  if (error) {
+    toast.error(error.message);
+  }
+
+  const handleResponse = (data: ISigninResponse) => {
+    if (data.success) {
+      client.writeQuery({
+        query: GET_LOCAL_USER,
+        data: { localUser: data.data },
+      });
+      navigate(`/users/${data.data.id}/products`);
+    } else {
+      toast.error(data.message, { theme: "colored" });
+    }
+  };
+
   const handlerOnSubmit = async () => {
-    const data = {
+    const formData = {
       email: getValues("email"),
       password: getValues("password"),
     };
-    console.log(data);
+
+    try {
+      const { data } = await signIn({ variables: formData });
+
+      handleResponse(data.signIn);
+    } catch (err) {
+      console.error("Error signing up:", err);
+    }
   };
 
   return (
@@ -29,6 +69,7 @@ const SigninForm = () => {
       className="flex flex-col gap-5 my-5"
       onSubmit={handleSubmit(handlerOnSubmit)}
     >
+      <ToastContainer />
       <div>
         <Controller
           name="email"
@@ -81,7 +122,9 @@ const SigninForm = () => {
         )}
       </div>
 
-      <Button type="submit" variant="button-primary" text="SIGN IN"></Button>
+      <Button type="submit" variant="button-primary">
+        {loading ? <BeatLoader color="white" size={8} /> : "SIGN IN"}
+      </Button>
     </form>
   );
 };

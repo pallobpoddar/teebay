@@ -8,6 +8,7 @@ const Signup = () => {
       form={SignupForm}
       text="Already have an account?"
       link="/signin"
+      linkText="Sign In"
     />
   );
 };

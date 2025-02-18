@@ -1,6 +1,18 @@
 import { Controller, useForm } from "react-hook-form";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
+import { SIGN_UP } from "../../graphql/mutations/users";
+import { useMutation } from "@apollo/client";
+import { BeatLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
+import IUser from "../../interfaces/IUser";
+import { useNavigate } from "react-router-dom";
+
+interface ISignupResponse {
+  success: boolean;
+  message: string;
+  data: IUser;
+}
 
 const SignupForm = () => {
   const {
@@ -22,8 +34,23 @@ const SignupForm = () => {
     },
   });
 
+  const [signUp, { loading, error }] = useMutation(SIGN_UP);
+  const navigate = useNavigate();
+
+  if (error) {
+    toast.error(error.message);
+  }
+
+  const handleResponse = (data: ISignupResponse) => {
+    if (data.success) {
+      navigate("/signin");
+    } else {
+      toast.error(data.message, { theme: "colored" });
+    }
+  };
+
   const handlerOnSubmit = async () => {
-    const data = {
+    const formData = {
       name: getValues("firstName") + " " + getValues("lastName"),
       address: getValues("address"),
       email: getValues("email"),
@@ -31,7 +58,14 @@ const SignupForm = () => {
       password: getValues("password"),
       confirmPassword: getValues("confirmPassword"),
     };
-    console.log(data);
+
+    try {
+      const { data } = await signUp({ variables: formData });
+
+      handleResponse(data.signUp);
+    } catch (err) {
+      console.error("Error signing up:", err);
+    }
   };
 
   return (
@@ -39,6 +73,7 @@ const SignupForm = () => {
       className="flex flex-col gap-5 my-5"
       onSubmit={handleSubmit(handlerOnSubmit)}
     >
+      <ToastContainer />
       <div>
         <Controller
           name="firstName"
@@ -222,7 +257,9 @@ const SignupForm = () => {
         )}
       </div>
 
-      <Button type="submit" variant="button-primary" text="SIGN UP" />
+      <Button type="submit" variant="button-primary">
+        {loading ? <BeatLoader color="white" size={8} /> : "SIGN UP"}
+      </Button>
     </form>
   );
 };
