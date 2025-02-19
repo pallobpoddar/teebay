@@ -1,8 +1,24 @@
 import { gql } from "@apollo/client";
 
-export const GET_ALL_PRODUCTS = gql`
-  query GetAllProducts {
-    getAllProducts {
+export const CREATE_PRODUCT = gql`
+  mutation CreateProduct(
+    $title: String!
+    $categoryIds: [ID!]!
+    $description: String!
+    $price: Float!
+    $rent: Float!
+    $rentOption: RentOption!
+    $sellerId: ID!
+  ) {
+    createProduct(
+      title: $title
+      categoryIds: $categoryIds
+      description: $description
+      price: $price
+      rent: $rent
+      rentOption: $rentOption
+      sellerId: $sellerId
+    ) {
       success
       message
       data {
@@ -12,7 +28,6 @@ export const GET_ALL_PRODUCTS = gql`
           id
           name
         }
-        description
         price
         rent
         rentOption
@@ -23,15 +38,14 @@ export const GET_ALL_PRODUCTS = gql`
           phone
           address
         }
-        createdAt
       }
     }
   }
 `;
 
-export const GET_MY_PRODUCTS = gql`
-  query GetProductsBySellerId($sellerId: ID!) {
-    getProductsBySellerId(sellerId: $sellerId) {
+export const DELETE_PRODUCT = gql`
+  mutation DeleteProduct($deleteProductId: ID!) {
+    deleteProduct(id: $deleteProductId) {
       success
       message
       data {
@@ -52,7 +66,6 @@ export const GET_MY_PRODUCTS = gql`
           phone
           address
         }
-        createdAt
       }
     }
   }

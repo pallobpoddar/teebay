@@ -5,15 +5,25 @@ import Button from "../atoms/Button";
 import MultiSelect from "../molecules/MultiSelect";
 import Select from "../molecules/Select";
 import TextArea from "../atoms/TextArea";
+import { GET_ALL_CATEGORIES } from "../../graphql/queries/categories";
+import { useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+import { CREATE_PRODUCT } from "../../graphql/mutations/products";
+import { useMutation } from "@apollo/client";
+import { toast, ToastContainer } from "react-toastify";
+import IProduct from "../../interfaces/IProduct";
+import { BeatLoader } from "react-spinners";
+import { GET_LOCAL_USER } from "../../graphql/queries/users";
 
-type Category = {
-  id: string;
-  name: string;
-};
+interface IProductResponse {
+  success: boolean;
+  message: string;
+  data: IProduct;
+}
 
 type FormData = {
   title: string;
-  categories: Category[];
+  categoryIds: string[];
   description: string;
   price: number;
   rent: number;
@@ -30,21 +40,24 @@ const MultiStepForm = () => {
   } = useForm<FormData>({
     defaultValues: {
       title: "",
-      categories: [],
+      categoryIds: [],
       description: "",
       price: 0,
       rent: 0,
       rentOption: "",
     },
   });
-
   const [step, setStep] = useState(0);
+  const { data: categoryData } = useQuery(GET_ALL_CATEGORIES);
+  const navigate = useNavigate();
+  const [createProduct, { loading, error }] = useMutation(CREATE_PRODUCT);
+  const { data: user } = useQuery(GET_LOCAL_USER);
 
-  const categoryOptions = [
-    { id: "electronics", name: "Electronics" },
-    { id: "furniture", name: "Furniture" },
-    { id: "vehicles", name: "Vehicles" },
-  ];
+  if (error) {
+    toast.error(error.message);
+  }
+
+  const categoryOptions = categoryData?.getAllCategories?.data || [];
 
   const rentOptions = [
     { value: "", label: "Select an option" },
@@ -52,13 +65,36 @@ const MultiStepForm = () => {
     { value: "day", label: "per day" },
   ];
 
-  const onSubmit = (data: FormData) => {
-    console.log("Final Data:", data);
+  const handleResponse = (data: IProductResponse) => {
+    if (data.success) {
+      navigate(`/users/${data.data.id}/products`);
+    } else {
+      toast.error(data.message, { theme: "colored" });
+    }
+  };
+
+  const onSubmit = async (formData: FormData) => {
+    try {
+      const variables = {
+        title: formData.title,
+        description: formData.description,
+        price: Number(formData.price),
+        rent: Number(formData.rent),
+        rentOption: formData.rentOption,
+        categoryIds: formData.categoryIds,
+        sellerId: user?.localUser.id,
+      };
+
+      const { data } = await createProduct({ variables: variables });
+      handleResponse(data.createProduct);
+    } catch (err) {
+      console.error("Error signing up:", err);
+    }
   };
 
   const stepValidationFields: Record<number, Array<keyof FormData>> = {
     0: ["title"],
-    1: ["categories"],
+    1: ["categoryIds"],
     2: ["description"],
     3: ["price", "rent", "rentOption"],
   };
@@ -78,6 +114,7 @@ const MultiStepForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <ToastContainer />
       {step === 0 && (
         <div className="space-y-2">
           <p className="text-2xl font-medium text-jet-black text-center">
@@ -104,7 +141,7 @@ const MultiStepForm = () => {
             Select Categories
           </p>
           <Controller
-            name="categories"
+            name="categoryIds"
             control={control}
             rules={{ required: "Category is required" }}
             render={({ field }) => (
@@ -113,16 +150,19 @@ const MultiStepForm = () => {
                 placeholder="Select a category"
                 onChange={(selected) => {
                   field.onChange(selected);
-                  setValue("categories", selected);
+                  setValue(
+                    "categoryIds",
+                    selected.map((option) => option.id)
+                  );
                 }}
-                error={errors.categories && true}
+                error={errors.categoryIds && true}
               />
             )}
           />
 
-          {errors.categories && (
+          {errors.categoryIds && (
             <p className="text-red-500 text-sm my-1">
-              {errors.categories.message}
+              {errors.categoryIds.message}
             </p>
           )}
         </div>
@@ -245,7 +285,9 @@ const MultiStepForm = () => {
             className="ml-auto"
           />
         ) : (
-          <Button type="submit" variant="button-primary" text="Submit" />
+          <Button type="submit" variant="button-primary">
+            {loading ? <BeatLoader color="white" size={8} /> : "Submit"}
+          </Button>
         )}
       </div>
     </form>

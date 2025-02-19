@@ -58,10 +58,10 @@ const Modal = (props: Props) => {
           </div>
         )}
         <div className="flex items-center justify-end gap-4 mt-12">
-          <Button variant="button-secondary" onClick={props.onConfirm}>
+          <Button variant="button-secondary" onClick={props.onClose}>
             {props.variant === "rent" ? "Go back" : "No"}
           </Button>
-          <Button variant="button-primary" onClick={props.onClose}>
+          <Button variant="button-primary" onClick={props.onConfirm}>
             {props.variant === "rent" ? "Confirm rent" : "Yes"}
           </Button>
         </div>
