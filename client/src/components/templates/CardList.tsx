@@ -5,7 +5,7 @@ type Props = {
   title: string;
   products: IProduct[];
   includeDelete?: boolean;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string, e: React.MouseEvent) => void;
 };
 
 const CardList = (props: Props) => {
@@ -14,12 +14,12 @@ const CardList = (props: Props) => {
       <h1 className="text-3xl text-jet-black text-center m-8">{props.title}</h1>
       <div className="flex flex-col gap-6">
         {props.products.map((product) => (
-          <Card
-            key={product.id}
-            product={product}
-            includeDelete={props.includeDelete}
-            onDelete={(id) => props.onDelete && props.onDelete(id)}
-          />
+          <Card 
+          key={product.id} 
+          product={product} 
+          includeDelete={props.includeDelete} 
+          onDelete={(id, e) => props.onDelete && props.onDelete(id, e)} 
+        />
         ))}
       </div>
     </div>

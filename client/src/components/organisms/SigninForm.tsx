@@ -4,7 +4,7 @@ import Button from "../atoms/Button";
 import { SIGN_IN } from "../../graphql/mutations/users";
 import { useMutation } from "@apollo/client";
 import { BeatLoader } from "react-spinners";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import IUser from "../../interfaces/IUser";
 import { useNavigate } from "react-router-dom";
 import { GET_LOCAL_USER } from "../../graphql/queries/users";
@@ -69,7 +69,6 @@ const SigninForm = () => {
       className="flex flex-col gap-5 my-5"
       onSubmit={handleSubmit(handlerOnSubmit)}
     >
-      <ToastContainer />
       <div>
         <Controller
           name="email"

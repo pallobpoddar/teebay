@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { GET_LOCAL_USER } from "../../graphql/queries/users";
 import { useApolloClient } from "@apollo/client";
 import { useMutation } from "@apollo/client";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { DELETE_PRODUCT } from "../../graphql/mutations/products";
 
 const MyProducts = () => {
@@ -79,14 +79,14 @@ const MyProducts = () => {
     setIsModalOpen(false);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Stop the event from bubbling up
     setDeleteProductId(id);
     setIsModalOpen(true);
   };
 
   return (
     <>
-      <ToastContainer />
       {isModalOpen && (
         <Modal
           variant="delete"
@@ -120,7 +120,7 @@ const MyProducts = () => {
         title="MY PRODUCTS"
         products={products}
         includeDelete
-        onDelete={(id) => handleDelete(id)}
+        onDelete={(id, e) => handleDelete(id, e)}
       />
     </>
   );

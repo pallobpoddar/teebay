@@ -7,7 +7,6 @@ const AllProducts = () => {
   const { data: productData } = useQuery(GET_ALL_PRODUCTS, {
     fetchPolicy: "network-only",
   });
-  console.log(productData);
   const products: IProduct[] = productData?.getAllProducts?.data || [];
 
   return <CardList title="ALL PRODUCTS" products={products} />;

@@ -10,7 +10,7 @@ import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PRODUCT } from "../../graphql/mutations/products";
 import { useMutation } from "@apollo/client";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import IProduct from "../../interfaces/IProduct";
 import { BeatLoader } from "react-spinners";
 import { GET_LOCAL_USER } from "../../graphql/queries/users";
@@ -114,7 +114,6 @@ const MultiStepForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <ToastContainer />
       {step === 0 && (
         <div className="space-y-2">
           <p className="text-2xl font-medium text-jet-black text-center">

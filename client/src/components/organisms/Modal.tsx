@@ -4,7 +4,7 @@ import Input from "../atoms/Input";
 
 type Props = {
   variant: "buy" | "rent" | "delete";
-  isOpen: boolean;
+  isOpen?: boolean;
   onConfirm: () => void;
   onClose: () => void;
 };
