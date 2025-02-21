@@ -66,9 +66,7 @@ const MyProducts = () => {
         fetchPolicy: "network-only",
       });
 
-      if (data.deleteProduct.success) {
-        setIsModalOpen(true);
-      } else {
+      if (!data.deleteProduct.success) {
         toast.error(data.deleteProduct.message, { theme: "colored" });
       }
     } catch (err) {

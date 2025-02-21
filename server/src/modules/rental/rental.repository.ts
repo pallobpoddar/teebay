@@ -3,6 +3,23 @@ import prisma from "../../config/prismaClient";
 import { Rental } from "@prisma/client";
 
 class RentalRepository {
+  async findByProductId(productId: UUID): Promise<Rental | null> {
+    const rental = await prisma.rental.findFirst({
+      where: { productId },
+      include: {
+        product: {
+          include: {
+            categories: true,
+            seller: true,
+          },
+        },
+        borrower: true,
+      },
+    });
+
+    return rental;
+  }
+
   async getRentalsByUserId(userId: UUID): Promise<Rental[]> {
     const rentals = await prisma.rental.findMany({
       where: {

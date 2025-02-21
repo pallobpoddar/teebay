@@ -18,7 +18,7 @@ class RentalService {
 
     return rentals;
   }
-  
+
   async createRental(
     productId: UUID,
     borrowerId: UUID,
@@ -36,6 +36,13 @@ class RentalService {
     if (!user) {
       throw new GraphQLError("User not found", {
         extensions: { code: "NOT_FOUND" },
+      });
+    }
+
+    const existingRental = await rentalRepository.findByProductId(productId);
+    if (existingRental) {
+      throw new GraphQLError("Product is already rented", {
+        extensions: { code: "CONFLICT" },
       });
     }
 
