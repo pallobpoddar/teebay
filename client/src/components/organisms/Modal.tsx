@@ -158,6 +158,7 @@ const Modal = (props: Props) => {
               />
             ) : (
               <Button
+                type="button"
                 variant="button-primary"
                 text="Yes"
                 onClick={() => props.onConfirm()}

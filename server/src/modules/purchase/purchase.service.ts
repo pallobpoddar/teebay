@@ -34,6 +34,15 @@ class PurchaseService {
       });
     }
 
+    const existingPurchase = await purchaseRepository.findByProductId(
+      productId
+    );
+    if (existingPurchase) {
+      throw new GraphQLError("Product is already bought", {
+        extensions: { code: "CONFLICT" },
+      });
+    }
+
     const purchase = await purchaseRepository.createPurchase(
       productId,
       buyerId
