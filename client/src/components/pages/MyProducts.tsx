@@ -11,6 +11,8 @@ import { useApolloClient } from "@apollo/client";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { DELETE_PRODUCT } from "../../graphql/mutations/products";
+import { GET_SELECTED_PRODUCT } from "../../graphql/queries/products";
+import IProduct from "../../interfaces/IProduct";
 
 const MyProducts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,10 +81,18 @@ const MyProducts = () => {
     setIsModalOpen(false);
   };
 
-  const handleDelete = async (id: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // Stop the event from bubbling up
+  const handleDelete = async (id: string) => {
     setDeleteProductId(id);
     setIsModalOpen(true);
+  };
+
+  const handleCardClick = (product: IProduct) => {
+    client.writeQuery({
+      query: GET_SELECTED_PRODUCT,
+      data: { selectedProduct: product },
+    });
+
+    navigate(`/products/${product.id}/update`);
   };
 
   return (
@@ -90,25 +100,16 @@ const MyProducts = () => {
       {isModalOpen && (
         <Modal
           variant="delete"
-          isOpen={isModalOpen}
           onConfirm={handleConfirm}
           onClose={handleClose}
         />
       )}
       <div className="flex justify-end gap-4 mx-6 my-4">
         <Link to={"/products"} className="text-blue">
-          <Button
-            text="ALL PRODUCTS"
-            variant="button-primary"
-            onClick={() => navigate("/products")}
-          />
+          <Button text="ALL PRODUCTS" variant="button-primary" />
         </Link>
         <Link to={"/products/creation"} className="text-blue">
-          <Button
-            text="ADD PRODUCT"
-            variant="button-primary"
-            onClick={() => navigate("/products/creation")}
-          />
+          <Button text="ADD PRODUCT" variant="button-primary" />
         </Link>
         <Button
           text="LOGOUT"
@@ -119,8 +120,8 @@ const MyProducts = () => {
       <CardList
         title="MY PRODUCTS"
         products={products}
-        includeDelete
-        onDelete={(id, e) => handleDelete(id, e)}
+        onDelete={(id) => handleDelete(id)}
+        onCardClick={handleCardClick}
       />
     </>
   );

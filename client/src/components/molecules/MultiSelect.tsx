@@ -13,17 +13,25 @@ type Props = {
   options: Option[];
   onChange: (selected: Option[]) => void;
   error?: boolean;
+  defaultSelected?: Option[];
 };
 
 const MultiSelect = (props: Props) => {
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>(props.defaultSelected || []);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    if (props.defaultSelected?.length) {
+      props.onChange(props.defaultSelected);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const selectOption = (option: Option) => {
-    if (!selectedOptions.includes(option)) {
+    if (!selectedOptions.some(selected => selected.id === option.id)) {
       const newSelectedOptions = [...selectedOptions, option];
       setSelectedOptions(newSelectedOptions);
       props.onChange(newSelectedOptions);

@@ -14,12 +14,7 @@ const Button = (props: Props) => {
     <button
       type={props.type}
       className={clsx(props.variant, props.className)}
-      onClick={(e) => {
-        e.stopPropagation();
-        if (props.onClick) {
-          props.onClick(e);
-        }
-      }}
+      onClick={props.onClick}
     >
       {props.text}
       {props.children}

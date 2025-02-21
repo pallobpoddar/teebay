@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ProductDetailsLayout from "../templates/ProductDetailsLayout";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import Modal from "../organisms/Modal";
 import { useQuery } from "@apollo/client";
 import { GET_SELECTED_PRODUCT } from "../../graphql/queries/products";

@@ -5,6 +5,7 @@ import AllProducts from "./components/pages/AllProducts";
 import MyProducts from "./components/pages/MyProducts";
 import ProductCreation from "./components/pages/ProductCreation";
 import ProductDetails from "./components/pages/ProductDetails";
+import ProductUpdate from "./components/pages/ProductUpdate";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/products" element={<AllProducts />} />
         <Route path="/users/:id/products" element={<MyProducts />} />
         <Route path="/products/creation" element={<ProductCreation />} />
-        <Route path="products/:id" element={<ProductDetails />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/products/:id/update" element={<ProductUpdate />} />
       </Routes>
     </Router>
   );

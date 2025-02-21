@@ -6,10 +6,9 @@ import MultiSelect from "../molecules/MultiSelect";
 import Select from "../molecules/Select";
 import TextArea from "../atoms/TextArea";
 import { GET_ALL_CATEGORIES } from "../../graphql/queries/categories";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PRODUCT } from "../../graphql/mutations/products";
-import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import IProduct from "../../interfaces/IProduct";
 import { BeatLoader } from "react-spinners";
@@ -30,7 +29,7 @@ type FormData = {
   rentOption: string;
 };
 
-const MultiStepForm = () => {
+const MultiPageForm = () => {
   const {
     control,
     handleSubmit,
@@ -47,9 +46,9 @@ const MultiStepForm = () => {
       rentOption: "",
     },
   });
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const { data: categoryData } = useQuery(GET_ALL_CATEGORIES);
-  const navigate = useNavigate();
   const [createProduct, { loading, error }] = useMutation(CREATE_PRODUCT);
   const { data: user } = useQuery(GET_LOCAL_USER);
 
@@ -67,7 +66,7 @@ const MultiStepForm = () => {
 
   const handleResponse = (data: IProductResponse) => {
     if (data.success) {
-      navigate(`/users/${data.data.id}/products`);
+      navigate(`/users/${user.localUser.id}/products`);
     } else {
       toast.error(data.message, { theme: "colored" });
     }
@@ -293,4 +292,4 @@ const MultiStepForm = () => {
   );
 };
 
-export default MultiStepForm;
+export default MultiPageForm;

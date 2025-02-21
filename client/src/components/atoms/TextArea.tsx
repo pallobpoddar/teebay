@@ -8,7 +8,7 @@ const TextArea = (props: Props) => {
   return (
     <textarea
       rows={props.rows}
-      className={`w-full rounded-sm ${
+      className={`p-3 w-full rounded-sm ${
         props.error
           ? `border border-red-500 focus:outline-red-500`
           : `focus:outline-purple border-2 border-gray`

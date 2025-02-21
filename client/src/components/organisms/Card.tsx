@@ -1,40 +1,29 @@
 import IProduct from "../../interfaces/IProduct";
 import Button from "../atoms/Button";
 import DeleteIcon from "../../assets/icons/delete-icon.svg?react";
-import client from "../../apollo/apolloClient";
-import { useNavigate } from "react-router-dom";
-import { GET_SELECTED_PRODUCT } from "../../graphql/queries/products";
 
 type Props = {
   product: IProduct;
-  includeDelete?: boolean;
-  onDelete?: (id: string, e: React.MouseEvent) => void;
+  onDelete?: (id: string) => void;
+  onCardClick?: (product: IProduct) => void;
 };
 
 const Card = (props: Props) => {
-  const navigate = useNavigate();
-
-  const handleCardClick = (product: IProduct) => {
-    client.writeQuery({
-      query: GET_SELECTED_PRODUCT,
-      data: { selectedProduct: product },
-    });
-    navigate(`/products/${product.id}`);
-  };
-
   return (
     <article
       className="py-3 px-5 border-2 border-gray md:py-6 md:px-10 cursor-pointer"
-      onClick={() => handleCardClick(props.product)}
+      onClick={() => {
+        props.onCardClick?.(props.product);
+      }}
     >
       <div className="flex items-center justify-between">
         <h2 className="text-2xl text-jet-black mb-3">{props.product.title}</h2>
-        {props.includeDelete && (
+        {props.onDelete && (
           <Button
             className="cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
-              props.onDelete?.(props.product.id, e);
+              props.onDelete?.(props.product.id);
             }}
           >
             <DeleteIcon />

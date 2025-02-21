@@ -2,6 +2,9 @@ import IProduct from "../../interfaces/IProduct";
 import CardList from "../templates/CardList";
 import { GET_ALL_PRODUCTS } from "../../graphql/queries/products";
 import { useQuery } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
+import { GET_SELECTED_PRODUCT } from "../../graphql/queries/products";
+import { useNavigate } from "react-router-dom";
 
 const AllProducts = () => {
   const { data: productData } = useQuery(GET_ALL_PRODUCTS, {
@@ -9,7 +12,25 @@ const AllProducts = () => {
   });
   const products: IProduct[] = productData?.getAllProducts?.data || [];
 
-  return <CardList title="ALL PRODUCTS" products={products} />;
+  const client = useApolloClient();
+  const navigate = useNavigate();
+
+  const handleCardClick = (product: IProduct) => {
+    client.writeQuery({
+      query: GET_SELECTED_PRODUCT,
+      data: { selectedProduct: product },
+    });
+
+    navigate(`/products/${product.id}`);
+  };
+
+  return (
+    <CardList
+      title="ALL PRODUCTS"
+      products={products}
+      onCardClick={handleCardClick}
+    />
+  );
 };
 
 export default AllProducts;

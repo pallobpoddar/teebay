@@ -4,7 +4,6 @@ import Input from "../atoms/Input";
 
 type Props = {
   variant: "buy" | "rent" | "delete";
-  isOpen?: boolean;
   onConfirm: () => void;
   onClose: () => void;
 };
@@ -31,8 +30,6 @@ const Modal = (props: Props) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.onClose]);
-
-  if (!props.isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray/50">
