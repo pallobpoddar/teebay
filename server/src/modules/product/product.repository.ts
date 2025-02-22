@@ -30,7 +30,21 @@ class ProductRepository {
 
   async getProductsBySellerId(sellerId: UUID): Promise<Product[]> {
     const products = await prisma.product.findMany({
-      where: { sellerId },
+      where: {
+        sellerId,
+        AND: [
+          {
+            NOT: {
+              rentals: {
+                some: {},
+              },
+            },
+          },
+          {
+            purchase: null,
+          },
+        ],
+      },
       include: {
         seller: true,
         categories: true,
