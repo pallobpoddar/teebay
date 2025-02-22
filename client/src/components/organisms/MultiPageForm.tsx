@@ -20,6 +20,11 @@ interface IProductResponse {
   data: IProduct;
 }
 
+type Category = {
+  id: string;
+  name: string;
+};
+
 type FormData = {
   title: string;
   categoryIds: string[];
@@ -35,6 +40,7 @@ const MultiPageForm = () => {
     handleSubmit,
     setValue,
     trigger,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -51,6 +57,8 @@ const MultiPageForm = () => {
   const { data: categoryData } = useQuery(GET_ALL_CATEGORIES);
   const [createProduct, { loading, error }] = useMutation(CREATE_PRODUCT);
   const { data: user } = useQuery(GET_LOCAL_USER);
+
+  const formValues = watch();
 
   if (error) {
     toast.error(error.message);
@@ -111,8 +119,32 @@ const MultiPageForm = () => {
     setStep((prev) => Math.max(0, prev - 1));
   };
 
+  const SummaryPage = () => {
+    const selectedCategories = categoryOptions.filter((category: Category) =>
+      formValues.categoryIds.includes(category.id)
+    );
+
+    return (
+      <div className="space-y-6">
+        <p className="text-2xl font-medium text-jet-black">Summary</p>
+        <p>Title: {formValues.title}</p>
+        <p>
+          Categories:{" "}
+          {selectedCategories
+            .map((category: Category) => category.name)
+            .join(", ")}
+        </p>
+        <p>Description: {formValues.description}</p>
+        <p>
+          Price: ${formValues.price}, To Rent: ${formValues.rent} per{" "}
+          {formValues.rentOption}
+        </p>
+      </div>
+    );
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="space-y-4">
       {step === 0 && (
         <div className="space-y-2">
           <p className="text-2xl font-medium text-jet-black text-center">
@@ -264,6 +296,8 @@ const MultiPageForm = () => {
         </div>
       )}
 
+      {step === 4 && <SummaryPage />}
+
       <div className="flex justify-between mt-6">
         {step > 0 && (
           <Button
@@ -274,7 +308,7 @@ const MultiPageForm = () => {
           />
         )}
 
-        {step < 3 ? (
+        {step < 4 && (
           <Button
             type="button"
             variant="button-primary"
@@ -282,13 +316,18 @@ const MultiPageForm = () => {
             onClick={nextStep}
             className="ml-auto"
           />
-        ) : (
-          <Button type="submit" variant="button-primary">
+        )}
+        {step === 4 && (
+          <Button
+            type="submit"
+            variant="button-primary"
+            onClick={handleSubmit(onSubmit)}
+          >
             {loading ? <BeatLoader color="white" size={8} /> : "Submit"}
           </Button>
         )}
       </div>
-    </form>
+    </div>
   );
 };
 
