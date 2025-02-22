@@ -93,7 +93,9 @@ class ProductRepository {
       where: { id },
       data: {
         title,
-        categories: { connect: categoryIds?.map((id: UUID) => ({ id })) },
+        categories: {
+          set: categoryIds?.map((id: UUID) => ({ id })) || [],
+        },
         description,
         price,
         rent,

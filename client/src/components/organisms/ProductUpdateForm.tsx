@@ -82,7 +82,10 @@ const ProductUpdateForm = (props: Props) => {
         sellerId: user?.localUser.id,
       };
 
-      const { data } = await updateProduct({ variables: variables });
+      const { data } = await updateProduct({
+        variables: variables,
+        fetchPolicy: "network-only",
+      });
       handleResponse(data.updateProduct);
     } catch (err) {
       console.error("Error signing up:", err);
