@@ -48,13 +48,15 @@ const Card = (props: Props) => {
           props.product.description
         )}
       </p>
-      <div className="flex items-center justify-between text-slate-gray font-medium">
-        <p>
-          Date posted:{" "}
-          <>{new Date(props.product.createdAt).toISOString().split("T")[0]}</>
-        </p>
-        <p>156 views</p>
-      </div>
+      {props.product.createdAt && (
+        <div className="flex items-center justify-between text-slate-gray font-medium">
+          <p>
+            Date posted:{" "}
+            <>{new Date(props.product.createdAt).toISOString().split("T")[0]}</>
+          </p>
+          <p>156 views</p>
+        </div>
+      )}
     </article>
   );
 };

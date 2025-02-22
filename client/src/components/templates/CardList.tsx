@@ -2,7 +2,7 @@ import IProduct from "../../interfaces/IProduct";
 import Card from "../organisms/Card";
 
 type Props = {
-  title: string;
+  title?: string;
   products: IProduct[];
   onDelete?: (id: string) => void;
   onCardClick?: (product: IProduct) => void;
@@ -17,7 +17,7 @@ const CardList = (props: Props) => {
           <Card
             key={product.id}
             product={product}
-            onDelete={(id) => props.onDelete && props.onDelete(id)}
+            onDelete={props.onDelete}
             onCardClick={(product: IProduct) =>
               props.onCardClick && props.onCardClick(product)
             }

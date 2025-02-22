@@ -6,6 +6,7 @@ import MyProducts from "./components/pages/MyProducts";
 import ProductCreation from "./components/pages/ProductCreation";
 import ProductDetails from "./components/pages/ProductDetails";
 import ProductUpdate from "./components/pages/ProductUpdate";
+import TransactionHistory from "./components/pages/TransactionHistory";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
         <Route path="/products/creation" element={<ProductCreation />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/products/:id/update" element={<ProductUpdate />} />
+        <Route
+          path="/users/:id/products/history"
+          element={<TransactionHistory />}
+        />
       </Routes>
     </Router>
   );

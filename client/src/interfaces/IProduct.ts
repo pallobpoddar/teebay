@@ -1,3 +1,5 @@
+import IUser from "./IUser";
+
 interface IProduct {
   id: string;
   title: string;
@@ -9,6 +11,7 @@ interface IProduct {
     id: string;
     name: string;
   }[];
+  seller: IUser;
   createdAt: Date;
 }
 

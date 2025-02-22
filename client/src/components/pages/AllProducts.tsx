@@ -5,6 +5,8 @@ import { useQuery } from "@apollo/client";
 import { useApolloClient } from "@apollo/client";
 import { GET_SELECTED_PRODUCT } from "../../graphql/queries/products";
 import { useNavigate } from "react-router-dom";
+import IPurchase from "../../interfaces/Ipurchase";
+import IRental from "../../interfaces/IRental";
 
 const AllProducts = () => {
   const { data: productData } = useQuery(GET_ALL_PRODUCTS, {
@@ -15,7 +17,7 @@ const AllProducts = () => {
   const client = useApolloClient();
   const navigate = useNavigate();
 
-  const handleCardClick = (product: IProduct) => {
+  const handleCardClick = (product: IProduct | IPurchase | IRental) => {
     client.writeQuery({
       query: GET_SELECTED_PRODUCT,
       data: { selectedProduct: product },

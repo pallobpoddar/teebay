@@ -4,6 +4,7 @@ type Rental {
   borrower: User!
   rentStartDate: Date!
   rentEndDate: Date!
+  createdAt: Date!
 }
 
 type RentalMutationResponse {

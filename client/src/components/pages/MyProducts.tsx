@@ -103,6 +103,12 @@ const MyProducts = () => {
         />
       )}
       <div className="flex justify-end gap-4 mx-6 my-4">
+        <Link
+          to={`/users/${user.localUser.id}/products/history`}
+          className="text-blue"
+        >
+          <Button text="TRANSACTIONS" variant="button-primary" />
+        </Link>
         <Link to={"/products"} className="text-blue">
           <Button text="ALL PRODUCTS" variant="button-primary" />
         </Link>
